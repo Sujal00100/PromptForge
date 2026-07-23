@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Prompt",
+  "description": "Schema for an optimized prompt history entry in PromptForge",
+  "type": "object",
+  "required": ["task", "originalPrompt", "rewrittenPrompt", "score"],
+  "properties": {
+    "_id": {
+      "type": "string",
+      "description": "MongoDB ObjectId (auto-generated)"
+    },
+    "task": {
+      "type": "string",
+      "description": "Description of what the prompt is intended to accomplish",
+      "maxLength": 500
+    },
+    "originalPrompt": {
+      "type": "string",
+      "description": "The user's original unoptimized prompt",
+      "maxLength": 10000
+    },
+    "rewrittenPrompt": {
+      "type": "string",
+      "description": "The AI-optimized version of the prompt",
+      "maxLength": 10000
+    },
+    "score": {
+      "type": "object",
+      "description": "Multi-dimensional quality score of the prompt",
+      "required": ["clarity", "specificity", "context", "structure", "overall"],
+      "properties": {
+        "clarity": { "type": "number", "minimum": 0, "maximum": 100 },
+        "specificity": { "type": "number", "minimum": 0, "maximum": 100 },
+        "context": { "type": "number", "minimum": 0, "maximum": 100 },
+        "structure": { "type": "number", "minimum": 0, "maximum": 100 },
+        "overall": { "type": "number", "minimum": 0, "maximum": 100 },
+        "strengths": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "weaknesses": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "suggestions": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "improvements": {
+      "type": "array",
+      "description": "List of specific improvements made to the prompt",
+      "items": {
+        "type": "object",
+        "required": ["category", "before", "after", "explanation"],
+        "properties": {
+          "category": { "type": "string" },
+          "before": { "type": "string" },
+          "after": { "type": "string" },
+          "explanation": { "type": "string" }
+        }
+      }
+    },
+    "versions": {
+      "type": "array",
+      "description": "Alternative style versions of the prompt",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "number" },
+          "style": { "type": "string" },
+          "prompt": { "type": "string" },
+          "score": { "type": "number" },
+          "rationale": { "type": "string" }
+        }
+      }
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Auto-generated creation timestamp"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Auto-generated update timestamp"
+    }
+  }
+}
